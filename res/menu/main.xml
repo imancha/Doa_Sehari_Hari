@@ -3,9 +3,21 @@
     tools:context="me.imancha.doa.MainActivity" >
 
     <item
-        android:id="@+id/action_settings"
-        android:orderInCategory="100"
+        android:id="@+id/action_search"
+        android:icon="@drawable/ic_action_search"
+        android:showAsAction="ifRoom"
+        android:title="@string/action_search"/>
+    <item
+        android:id="@+id/action_bookmark"
         android:showAsAction="never"
-        android:title="@string/action_settings"/>
+        android:title="@string/action_bookmark"/>
+    <item
+        android:id="@+id/action_help"
+        android:showAsAction="never"
+        android:title="@string/action_help"/>
+    <item
+        android:id="@+id/action_about"
+        android:showAsAction="never"
+        android:title="@string/action_about"/>
 
 </menu>

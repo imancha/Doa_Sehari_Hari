@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class DoaView extends Activity {
 
@@ -25,17 +26,21 @@ public class DoaView extends Activity {
 		final TextView TV3 = (TextView) findViewById(R.id.TextView3);
 		final TextView TV4 = (TextView) findViewById(R.id.TextView4);
 
+		// Custom fonts from assets folder
 		Typeface type1 = Typeface.createFromAsset(getAssets(), "KacstOffice.ttf");
 		Typeface type2 = Typeface.createFromAsset(getAssets(), "KacstBook.ttf");
 
+		// Set the custom fonts
 		TV1.setTypeface(type1);
 		TV2.setTypeface(type2, Typeface.BOLD);
 		TV3.setTypeface(Typeface.MONOSPACE, Typeface.ITALIC);
 		TV4.setTypeface(type1);
 
+		// Get data from database
 		DoaDB mydb = new DoaDB(this);
 		Cursor res = mydb.GetData(nama);
 
+		// Fetch result from database
 		res.moveToFirst();
 		String arab = res.getString(res.getColumnIndex(DoaDB.COLUMN_ARAB));
 		String baca = res.getString(res.getColumnIndex(DoaDB.COLUMN_BACA));
@@ -59,11 +64,15 @@ public class DoaView extends Activity {
 		// Handle action bar item clicks here. The action bar will
 		// automatically handle clicks on the Home/Up button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
-		int id = item.getItemId();
-		if (id == android.R.id.home) {
-			finish();
-			return true;
+		switch (item.getItemId()) {
+			case android.R.id.home:
+				finish();
+				return true;
+			case R.id.bookmark:
+				Toast.makeText(getApplicationContext(), R.string.bookmark,
+						Toast.LENGTH_SHORT).show();
+			default:
+				return super.onOptionsItemSelected(item);
 		}
-		return super.onOptionsItemSelected(item);
 	}
 }

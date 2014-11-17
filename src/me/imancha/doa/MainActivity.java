@@ -1,13 +1,17 @@
 package me.imancha.doa;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -38,6 +42,7 @@ public class MainActivity extends Activity {
 
 		list.setAdapter(new ArrayAdapter<String>(this,
 				android.R.layout.simple_list_item_1, mydb.GetAllDoa()) {
+
 			@Override
 			public View getView(int position, View convertView, ViewGroup parent) {
 				final View view = super.getView(position, convertView, parent);
@@ -80,5 +85,51 @@ public class MainActivity extends Activity {
 			}
 		});
 
+		// Force overflow menu on top right corner
+		try {
+			ViewConfiguration config = ViewConfiguration.get(this);
+			Field menuKeyField = ViewConfiguration.class
+					.getDeclaredField("sHasPermanentMenuKey");
+			if (menuKeyField != null) {
+				menuKeyField.setAccessible(true);
+				menuKeyField.setBoolean(config, false);
+			}
+		} catch (Exception e) {
+
+		}
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.main, menu);
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// Handle action bar item clicks here. The action bar will
+		// automatically handle clicks on the Home/Up button, so long
+		// as you specify a parent activity in AndroidManifest.xml.
+		switch (item.getItemId()) {
+			case R.id.action_search:
+				Toast.makeText(getApplicationContext(), R.string.action_search,
+						Toast.LENGTH_SHORT).show();
+				return true;
+			case R.id.action_bookmark:
+				Toast.makeText(getApplicationContext(), R.string.action_bookmark,
+						Toast.LENGTH_SHORT).show();
+				return true;
+			case R.id.action_help:
+				Toast.makeText(getApplicationContext(), R.string.action_help,
+						Toast.LENGTH_SHORT).show();
+				return true;
+			case R.id.action_about:
+				Toast.makeText(getApplicationContext(), R.string.action_about,
+						Toast.LENGTH_SHORT).show();
+				return true;
+			default:
+				return super.onOptionsItemSelected(item);
+		}
 	}
 }
