@@ -76,19 +76,35 @@ public class DoaDB extends SQLiteOpenHelper {
 						| SQLiteDatabase.CREATE_IF_NECESSARY);
 	}
 
-	public Cursor GetData(String nama) {
+	public Cursor GetData(String text) {
 		SQLiteDatabase db = this.getReadableDatabase();
 		Cursor res = db.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE "
-				+ COLUMN_NAMA + " = '" + nama + "' LIMIT 1", null);
+				+ COLUMN_NAMA + " = '" + text + "' LIMIT 1", null);
 
 		return res;
 	}
 
-	public ArrayList<String> GetAllDoa() {
-		ArrayList<String> list = new ArrayList<String>();
+	public ArrayList<String> GetMatchData(String text) {
 		SQLiteDatabase db = this.getReadableDatabase();
-		Cursor res = db.rawQuery("SELECT * FROM " + TABLE_NAME + " ORDER BY "
+		Cursor res = db.rawQuery("SELECT " + COLUMN_NAMA + " FROM " + TABLE_NAME
+				+ " WHERE " + COLUMN_NAMA + " LIKE '%" + text + "%' ORDER BY "
 				+ COLUMN_NAMA + " ASC", null);
+		ArrayList<String> list = new ArrayList<String>();
+
+		res.moveToFirst();
+		while (res.isAfterLast() == false) {
+			list.add(res.getString(res.getColumnIndex(COLUMN_NAMA)));
+			res.moveToNext();
+		}
+
+		return list;
+	}
+
+	public ArrayList<String> GetAllData() {
+		SQLiteDatabase db = this.getReadableDatabase();
+		Cursor res = db.rawQuery("SELECT " + COLUMN_NAMA + " FROM " + TABLE_NAME
+				+ " ORDER BY " + COLUMN_NAMA + " ASC", null);
+		ArrayList<String> list = new ArrayList<String>();
 
 		res.moveToFirst();
 		while (res.isAfterLast() == false) {

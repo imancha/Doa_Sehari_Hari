@@ -2,8 +2,9 @@ package me.imancha.doa;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
-
 import android.app.Activity;
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -18,6 +19,8 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.SearchView;
+import android.widget.SearchView.OnQueryTextListener;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,7 +44,7 @@ public class MainActivity extends Activity {
 		final ListView list = (ListView) findViewById(R.id.listView1);
 
 		list.setAdapter(new ArrayAdapter<String>(this,
-				android.R.layout.simple_list_item_1, mydb.GetAllDoa()) {
+				android.R.layout.simple_list_item_1, mydb.GetAllData()) {
 
 			@Override
 			public View getView(int position, View convertView, ViewGroup parent) {
@@ -57,6 +60,8 @@ public class MainActivity extends Activity {
 				return view;
 			}
 		});
+		
+		mydb.close();
 
 		list.setOnItemClickListener(new OnItemClickListener() {
 
@@ -95,7 +100,7 @@ public class MainActivity extends Activity {
 				menuKeyField.setBoolean(config, false);
 			}
 		} catch (Exception e) {
-
+			Log.e("menu", "Create Menu Failed");
 		}
 	}
 
@@ -103,6 +108,37 @@ public class MainActivity extends Activity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.main, menu);
+
+		// Search action bar
+		SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+		SearchView searchView = (SearchView) menu.findItem(R.id.action_search)
+				.getActionView();
+
+		searchView.setSearchableInfo(searchManager
+				.getSearchableInfo(getComponentName()));
+		searchView.setSubmitButtonEnabled(false);
+		searchView.setOnQueryTextListener(new OnQueryTextListener() {
+
+			@Override
+			public boolean onQueryTextSubmit(String arg0) {
+				Intent intent = new Intent(getApplicationContext(), DoaSearch.class);
+				Bundle bundle = new Bundle();
+
+				bundle.putString("key", arg0.toString());
+
+				intent.putExtras(bundle);
+				startActivity(intent);
+
+				return true;
+			}
+
+			@Override
+			public boolean onQueryTextChange(String arg0) {
+
+				return false;
+			}
+		});
+
 		return true;
 	}
 
@@ -112,10 +148,6 @@ public class MainActivity extends Activity {
 		// automatically handle clicks on the Home/Up button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
 		switch (item.getItemId()) {
-			case R.id.action_search:
-				Toast.makeText(getApplicationContext(), R.string.action_search,
-						Toast.LENGTH_SHORT).show();
-				return true;
 			case R.id.action_bookmark:
 				Toast.makeText(getApplicationContext(), R.string.action_bookmark,
 						Toast.LENGTH_SHORT).show();

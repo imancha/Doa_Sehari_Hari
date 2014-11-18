@@ -17,9 +17,8 @@ public class DoaView extends Activity {
 		setContentView(R.layout.view_doa);
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		Bundle extras = getIntent().getExtras();
-		setTitle(extras.getString("nama"));
-
 		String nama = extras.getString("nama");
+		setTitle(nama);
 
 		final TextView TV1 = (TextView) findViewById(R.id.textView1);
 		final TextView TV2 = (TextView) findViewById(R.id.textView2);

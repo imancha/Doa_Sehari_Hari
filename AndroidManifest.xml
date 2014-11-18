@@ -24,6 +24,8 @@
         </activity>
         <activity android:name=".DoaView" >
         </activity>
+        <activity android:name=".DoaSearch" >
+        </activity>
     </application>
 
 </manifest>
