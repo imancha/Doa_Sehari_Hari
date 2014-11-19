@@ -11,6 +11,11 @@ import android.widget.Toast;
 
 public class DoaView extends Activity {
 
+	private static TextView TV1, TV2, TV3, TV4;
+	private static Typeface type1, type2;
+	private static DoaDB mydb;
+	private static DoaDBB mydbb;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -20,15 +25,14 @@ public class DoaView extends Activity {
 		String nama = extras.getString("nama");
 		setTitle(nama);
 
-		final TextView TV1 = (TextView) findViewById(R.id.textView1);
-		final TextView TV2 = (TextView) findViewById(R.id.textView2);
-		final TextView TV3 = (TextView) findViewById(R.id.TextView3);
-		final TextView TV4 = (TextView) findViewById(R.id.TextView4);
+		TV1 = (TextView) findViewById(R.id.textView1);
+		TV2 = (TextView) findViewById(R.id.textView2);
+		TV3 = (TextView) findViewById(R.id.TextView3);
+		TV4 = (TextView) findViewById(R.id.TextView4);
 
 		// Custom fonts from assets folder
-		Typeface type1 = Typeface.createFromAsset(getAssets(),
-				"KacstOffice.ttf");
-		Typeface type2 = Typeface.createFromAsset(getAssets(), "KacstBook.ttf");
+		type1 = Typeface.createFromAsset(getAssets(), "KacstOffice.ttf");
+		type2 = Typeface.createFromAsset(getAssets(), "KacstBook.ttf");
 
 		// Set the custom fonts
 		TV1.setTypeface(type1);
@@ -37,8 +41,7 @@ public class DoaView extends Activity {
 		TV4.setTypeface(type1);
 
 		// Get data from database
-		DoaDB mydb = new DoaDB(this);
-
+		mydb = new DoaDB(this);
 		mydb.OpenDatabase();
 
 		Cursor res = mydb.GetData(nama);
@@ -62,7 +65,7 @@ public class DoaView extends Activity {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.view, menu);
 
-		DoaDBB mydbb = new DoaDBB(getApplicationContext());
+		mydbb = new DoaDBB(getApplicationContext());
 
 		if (mydbb.GetData(getTitle().toString()).moveToFirst()) {
 			menu.findItem(R.id.bookmark_off).setVisible(false);
@@ -86,25 +89,25 @@ public class DoaView extends Activity {
 
 			return true;
 		case R.id.bookmark_on:
-			DoaDBB dbb = new DoaDBB(getApplicationContext());
-
-			dbb.DeleteData(getTitle().toString());
-			dbb.close();
+			mydbb = new DoaDBB(getApplicationContext());
+			mydbb.DeleteData(getTitle().toString());
 
 			Toast.makeText(getApplicationContext(),
 					getTitle().toString() + " removed from Bookmark",
 					Toast.LENGTH_SHORT).show();
 
+			mydbb.close();
+
 			return true;
 		case R.id.bookmark_off:
-			DoaDBB mydbb = new DoaDBB(getApplicationContext());
-
+			mydbb = new DoaDBB(getApplicationContext());
 			mydbb.InsertData(getTitle().toString());
-			mydbb.close();
 
 			Toast.makeText(getApplicationContext(),
 					getTitle().toString() + " added to Bookmark",
 					Toast.LENGTH_SHORT).show();
+
+			mydbb.close();
 
 			return true;
 		default:

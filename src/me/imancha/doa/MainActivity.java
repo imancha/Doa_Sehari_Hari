@@ -11,11 +11,13 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
@@ -28,12 +30,19 @@ import android.widget.Toast;
 
 public class MainActivity extends Activity {
 
+	private static ListView LV;
+	private static Intent intent;
+	private static Bundle bundle;
+	private static DoaDB mydb;
+	private static DoaDBB mydbb;
+	private static String title;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
-		DoaDB mydb = new DoaDB(this);
+		mydb = new DoaDB(this);
 
 		try {
 			mydb.CopyDatabaseFromAssets();
@@ -45,9 +54,9 @@ public class MainActivity extends Activity {
 
 		ArrayList<String> result = mydb.GetAllData();
 
-		final ListView list = (ListView) findViewById(R.id.listView1);
+		LV = (ListView) findViewById(R.id.listView1);
 
-		list.setAdapter(new ArrayAdapter<String>(this,
+		LV.setAdapter(new ArrayAdapter<String>(this,
 				android.R.layout.simple_list_item_1, result) {
 
 			@Override
@@ -65,29 +74,30 @@ public class MainActivity extends Activity {
 			}
 		});
 
-		list.setOnItemClickListener(new OnItemClickListener() {
+		LV.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long arg3) {
-				Intent intent = new Intent(getApplicationContext(), DoaView.class);
-				Bundle bundle = new Bundle();
+				intent = new Intent(getApplicationContext(), DoaView.class);
+				bundle = new Bundle();
 
-				bundle.putString("nama", arg0.getItemAtPosition(arg2).toString());
+				bundle.putString("nama", arg0.getItemAtPosition(arg2)
+						.toString());
 
 				intent.putExtras(bundle);
 				startActivity(intent);
 			}
 		});
 
-		list.setOnItemLongClickListener(new OnItemLongClickListener() {
+		LV.setOnItemLongClickListener(new OnItemLongClickListener() {
 
 			@Override
 			public boolean onItemLongClick(AdapterView<?> arg0, View arg1,
 					int arg2, long arg3) {
-				Toast.makeText(getApplicationContext(),
-						arg0.getItemAtPosition(arg2).toString(), Toast.LENGTH_SHORT)
-						.show();
+
+				title = arg0.getItemAtPosition(arg2).toString();
+
 				return false;
 			}
 		});
@@ -105,7 +115,65 @@ public class MainActivity extends Activity {
 			Log.e("menu", "Create Menu Failed");
 		}
 
+		registerForContextMenu(LV);
+
 		mydb.close();
+	}
+
+	@Override
+	public void onCreateContextMenu(ContextMenu menu, View v,
+			ContextMenuInfo menuInfo) {
+		if (v.getId() == R.id.listView1) {
+			menu.setHeaderTitle(title);
+			menu.add(Menu.NONE, 0, 0, "View");
+
+			mydbb = new DoaDBB(getApplicationContext());
+
+			if (mydbb.GetData(title).moveToFirst()) {
+				menu.add(Menu.NONE, 1, 1, "Remove from Bookmark");
+			} else {
+				menu.add(Menu.NONE, 2, 1, "Add to Bookmark");
+			}
+
+			mydbb.close();
+		}
+	}
+
+	@Override
+	public boolean onContextItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case 0:
+			bundle = new Bundle();
+			bundle.putString("nama", title);
+			intent = new Intent(getApplicationContext(), DoaView.class);
+			intent.putExtras(bundle);
+			startActivity(intent);
+
+			return true;
+		case 1:
+			mydbb = new DoaDBB(getApplicationContext());
+			mydbb.DeleteData(title);
+
+			Toast.makeText(getApplicationContext(),
+					title + " removed from Bookmark", Toast.LENGTH_SHORT)
+					.show();
+
+			mydbb.close();
+
+			return true;
+		case 2:
+			mydbb = new DoaDBB(getApplicationContext());
+			mydbb.InsertData(title);
+
+			Toast.makeText(getApplicationContext(),
+					title + " added to Bookmark", Toast.LENGTH_SHORT).show();
+
+			mydbb.close();
+
+			return true;
+		default:
+			return super.onContextItemSelected(item);
+		}
 	}
 
 	@Override
@@ -125,8 +193,8 @@ public class MainActivity extends Activity {
 
 			@Override
 			public boolean onQueryTextSubmit(String arg0) {
-				Intent intent = new Intent(getApplicationContext(), DoaSearch.class);
-				Bundle bundle = new Bundle();
+				intent = new Intent(getApplicationContext(), DoaSearch.class);
+				bundle = new Bundle();
 
 				bundle.putString("key", arg0.toString());
 
@@ -152,22 +220,21 @@ public class MainActivity extends Activity {
 		// automatically handle clicks on the Home/Up button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
 		switch (item.getItemId()) {
-			case R.id.action_bookmark:
-				Intent intent = new Intent(getApplicationContext(),
-						DoaBookmark.class);
-				startActivity(intent);
+		case R.id.action_bookmark:
+			intent = new Intent(getApplicationContext(), DoaBookmark.class);
+			startActivity(intent);
 
-				return true;
-			case R.id.action_help:
-				Toast.makeText(getApplicationContext(), R.string.action_help,
-						Toast.LENGTH_SHORT).show();
-				return true;
-			case R.id.action_about:
-				Toast.makeText(getApplicationContext(), R.string.action_about,
-						Toast.LENGTH_SHORT).show();
-				return true;
-			default:
-				return super.onOptionsItemSelected(item);
+			return true;
+		case R.id.action_help:
+			Toast.makeText(getApplicationContext(), R.string.action_help,
+					Toast.LENGTH_SHORT).show();
+			return true;
+		case R.id.action_about:
+			Toast.makeText(getApplicationContext(), R.string.action_about,
+					Toast.LENGTH_SHORT).show();
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
 		}
 	}
 }
