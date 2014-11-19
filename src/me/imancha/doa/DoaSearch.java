@@ -23,20 +23,20 @@ public class DoaSearch extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.search_doa);
+		setContentView(R.layout.activity_main);
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 
 		Bundle extras = getIntent().getExtras();
 		String key = extras.getString("key");
 
 		DoaDB mydb = new DoaDB(this);
+
 		mydb.OpenDatabase();
 
 		ArrayList<String> result = mydb.GetMatchData(key);
 
-		final ListView list = (ListView) findViewById(R.id.listView2);
+		final ListView list = (ListView) findViewById(R.id.listView1);
 		final TextView TV = (TextView) findViewById(R.id.textView5);
-
 		final Typeface type = Typeface.createFromAsset(getAssets(),
 				"KacstBook.ttf");
 
@@ -49,8 +49,10 @@ public class DoaSearch extends Activity {
 					android.R.layout.simple_list_item_1, result) {
 
 				@Override
-				public View getView(int position, View convertView, ViewGroup parent) {
-					final View view = super.getView(position, convertView, parent);
+				public View getView(int position, View convertView,
+						ViewGroup parent) {
+					final View view = super.getView(position, convertView,
+							parent);
 					final TextView text = (TextView) view
 							.findViewById(android.R.id.text1);
 					text.setTypeface(type);
@@ -60,17 +62,17 @@ public class DoaSearch extends Activity {
 			});
 		}
 
-		mydb.close();
-
 		list.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long arg3) {
-				Intent intent = new Intent(getApplicationContext(), DoaView.class);
+				Intent intent = new Intent(getApplicationContext(),
+						DoaView.class);
 				Bundle bundle = new Bundle();
 
-				bundle.putString("nama", arg0.getItemAtPosition(arg2).toString());
+				bundle.putString("nama", arg0.getItemAtPosition(arg2)
+						.toString());
 
 				intent.putExtras(bundle);
 				startActivity(intent);
@@ -83,12 +85,13 @@ public class DoaSearch extends Activity {
 			public boolean onItemLongClick(AdapterView<?> arg0, View arg1,
 					int arg2, long arg3) {
 				Toast.makeText(getApplicationContext(),
-						arg0.getItemAtPosition(arg2).toString(), Toast.LENGTH_SHORT)
-						.show();
+						arg0.getItemAtPosition(arg2).toString(),
+						Toast.LENGTH_SHORT).show();
 				return false;
 			}
 		});
 
+		mydb.close();
 	}
 
 	@Override
@@ -97,12 +100,12 @@ public class DoaSearch extends Activity {
 		// automatically handle clicks on the Home/Up button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
 		switch (item.getItemId()) {
-			case android.R.id.home:
-				finish();
-				return true;
+		case android.R.id.home:
+			finish();
+			return true;
 
-			default:
-				return super.onOptionsItemSelected(item);
+		default:
+			return super.onOptionsItemSelected(item);
 		}
 	}
 }

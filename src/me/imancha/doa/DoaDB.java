@@ -20,8 +20,9 @@ public class DoaDB extends SQLiteOpenHelper {
 	public static final int DATABASE_VERSION = 1;
 	public static final String DATABASE_PATH = Environment.getDataDirectory()
 			+ "/data/me.imancha.doa/databases/";
-	public static final String DATABASE_NAME = "doa";
+	public static final String DATABASE_NAME = "doa.db";
 	public static final String TABLE_NAME = "doa";
+	public static final String COLUMN_ID = "_id";
 	public static final String COLUMN_NAMA = "nama";
 	public static final String COLUMN_ARAB = "arab";
 	public static final String COLUMN_BACA = "baca";
@@ -36,12 +37,12 @@ public class DoaDB extends SQLiteOpenHelper {
 
 	@Override
 	public void onCreate(SQLiteDatabase arg0) {
-		// TODO Auto-generated constructor stub
+		// Do nothing
 	}
 
 	@Override
 	public void onUpgrade(SQLiteDatabase arg0, int arg1, int arg2) {
-		// TODO Auto-generated constructor stub
+		// Do nothing
 	}
 
 	public void CopyDatabaseFromAssets() throws IOException {
@@ -55,7 +56,7 @@ public class DoaDB extends SQLiteOpenHelper {
 			DBFile.createNewFile();
 		}
 
-		InputStream in = context.getAssets().open("doa");
+		InputStream in = context.getAssets().open(DATABASE_NAME);
 		OutputStream out = new FileOutputStream(OutputFilename);
 		byte[] buffer = new byte[1024];
 		int length;
@@ -76,18 +77,18 @@ public class DoaDB extends SQLiteOpenHelper {
 						| SQLiteDatabase.CREATE_IF_NECESSARY);
 	}
 
-	public Cursor GetData(String text) {
+	public Cursor GetData(String nama) {
 		SQLiteDatabase db = this.getReadableDatabase();
 		Cursor res = db.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE "
-				+ COLUMN_NAMA + " = '" + text + "' LIMIT 1", null);
+				+ COLUMN_NAMA + " = '" + nama + "' LIMIT 1", null);
 
 		return res;
 	}
 
-	public ArrayList<String> GetMatchData(String text) {
+	public ArrayList<String> GetMatchData(String nama) {
 		SQLiteDatabase db = this.getReadableDatabase();
 		Cursor res = db.rawQuery("SELECT " + COLUMN_NAMA + " FROM " + TABLE_NAME
-				+ " WHERE " + COLUMN_NAMA + " LIKE '%" + text + "%' ORDER BY "
+				+ " WHERE " + COLUMN_NAMA + " LIKE '%" + nama + "%' ORDER BY "
 				+ COLUMN_NAMA + " ASC", null);
 		ArrayList<String> list = new ArrayList<String>();
 

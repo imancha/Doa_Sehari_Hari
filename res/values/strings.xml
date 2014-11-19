@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Doa Sehari Hari</string>    
-    <string name="top">بِسْمِ اللّهِ الرَّحْمنِ الرّحِيْمِ</string>
+    <string name="app_name">Doa Sehari Hari</string>
+    <string name="top">بِسْمِ اللّهِ الرَّحْمنِ الرَّحِيْمِ</string>
     <string name="action_search">Search</string>
     <string name="action_help">Help</string>
     <string name="action_about">About</string>
     <string name="action_bookmark">Bookmark</string>
-    <string name="bookmark">Add to bookmark</string>
+    <string name="bookmark_off">Add to Bookmark</string>
+    <string name="bookmark_on">Remove from Bookmark</string>
 
 </resources>

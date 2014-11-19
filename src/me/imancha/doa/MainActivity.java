@@ -2,6 +2,8 @@ package me.imancha.doa;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+
 import android.app.Activity;
 import android.app.SearchManager;
 import android.content.Context;
@@ -41,10 +43,12 @@ public class MainActivity extends Activity {
 
 		mydb.OpenDatabase();
 
+		ArrayList<String> result = mydb.GetAllData();
+
 		final ListView list = (ListView) findViewById(R.id.listView1);
 
 		list.setAdapter(new ArrayAdapter<String>(this,
-				android.R.layout.simple_list_item_1, mydb.GetAllData()) {
+				android.R.layout.simple_list_item_1, result) {
 
 			@Override
 			public View getView(int position, View convertView, ViewGroup parent) {
@@ -60,8 +64,6 @@ public class MainActivity extends Activity {
 				return view;
 			}
 		});
-		
-		mydb.close();
 
 		list.setOnItemClickListener(new OnItemClickListener() {
 
@@ -102,6 +104,8 @@ public class MainActivity extends Activity {
 		} catch (Exception e) {
 			Log.e("menu", "Create Menu Failed");
 		}
+
+		mydb.close();
 	}
 
 	@Override
@@ -149,8 +153,10 @@ public class MainActivity extends Activity {
 		// as you specify a parent activity in AndroidManifest.xml.
 		switch (item.getItemId()) {
 			case R.id.action_bookmark:
-				Toast.makeText(getApplicationContext(), R.string.action_bookmark,
-						Toast.LENGTH_SHORT).show();
+				Intent intent = new Intent(getApplicationContext(),
+						DoaBookmark.class);
+				startActivity(intent);
+
 				return true;
 			case R.id.action_help:
 				Toast.makeText(getApplicationContext(), R.string.action_help,

@@ -26,7 +26,8 @@ public class DoaView extends Activity {
 		final TextView TV4 = (TextView) findViewById(R.id.TextView4);
 
 		// Custom fonts from assets folder
-		Typeface type1 = Typeface.createFromAsset(getAssets(), "KacstOffice.ttf");
+		Typeface type1 = Typeface.createFromAsset(getAssets(),
+				"KacstOffice.ttf");
 		Typeface type2 = Typeface.createFromAsset(getAssets(), "KacstBook.ttf");
 
 		// Set the custom fonts
@@ -37,6 +38,9 @@ public class DoaView extends Activity {
 
 		// Get data from database
 		DoaDB mydb = new DoaDB(this);
+
+		mydb.OpenDatabase();
+
 		Cursor res = mydb.GetData(nama);
 
 		// Fetch result from database
@@ -49,12 +53,25 @@ public class DoaView extends Activity {
 		TV2.setText(arab);
 		TV3.setText(baca);
 		TV4.setText("\" " + arti + " \"");
+
+		mydb.close();
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.view, menu);
+
+		DoaDBB mydbb = new DoaDBB(getApplicationContext());
+
+		if (mydbb.GetData(getTitle().toString()).moveToFirst()) {
+			menu.findItem(R.id.bookmark_off).setVisible(false);
+		} else {
+			menu.findItem(R.id.bookmark_on).setVisible(false);
+		}
+
+		mydbb.close();
+
 		return true;
 	}
 
@@ -64,14 +81,34 @@ public class DoaView extends Activity {
 		// automatically handle clicks on the Home/Up button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
 		switch (item.getItemId()) {
-			case android.R.id.home:
-				finish();
-				return true;
-			case R.id.bookmark:
-				Toast.makeText(getApplicationContext(), R.string.bookmark,
-						Toast.LENGTH_SHORT).show();
-			default:
-				return super.onOptionsItemSelected(item);
+		case android.R.id.home:
+			finish();
+
+			return true;
+		case R.id.bookmark_on:
+			DoaDBB dbb = new DoaDBB(getApplicationContext());
+
+			dbb.DeleteData(getTitle().toString());
+			dbb.close();
+
+			Toast.makeText(getApplicationContext(),
+					getTitle().toString() + " removed from Bookmark",
+					Toast.LENGTH_SHORT).show();
+
+			return true;
+		case R.id.bookmark_off:
+			DoaDBB mydbb = new DoaDBB(getApplicationContext());
+
+			mydbb.InsertData(getTitle().toString());
+			mydbb.close();
+
+			Toast.makeText(getApplicationContext(),
+					getTitle().toString() + " added to Bookmark",
+					Toast.LENGTH_SHORT).show();
+
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
 		}
 	}
 }
