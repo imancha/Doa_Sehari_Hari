@@ -9,5 +9,12 @@
     <string name="action_bookmark">Bookmark</string>
     <string name="bookmark_off">Add to Bookmark</string>
     <string name="bookmark_on">Remove from Bookmark</string>
+    <string name="help_bookmark">Tap to add or remove selected doa in the Bookmark</string>
+    <string name="help_search">Type doa name in order to search doa</string>
+    <string name="view">View</string>
+    <string name="add">Added to Bookmark</string>
+    <string name="remove">Removed from Bookmark</string>
+    <string name="empty">Bookmark Empty</string>
+    <string name="none">No Match Found</string>
 
 </resources>

@@ -9,15 +9,18 @@
         android:showAsAction="ifRoom|collapseActionView"
         android:title="@string/action_search"/>
     <item
-        android:id="@+id/action_bookmark"        
+        android:id="@+id/action_bookmark"
+        android:icon="@drawable/ic_action_bookmark"
         android:showAsAction="never"
         android:title="@string/action_bookmark"/>
     <item
         android:id="@+id/action_help"
+        android:icon="@drawable/ic_action_help"
         android:showAsAction="never"
         android:title="@string/action_help"/>
     <item
         android:id="@+id/action_about"
+        android:icon="@drawable/ic_action_about"
         android:showAsAction="never"
         android:title="@string/action_about"/>
 

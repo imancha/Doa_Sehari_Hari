@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="me.imancha.doa"
     android:versionCode="1"
-    android:versionName="2.0" >
+    android:versionName="2.1" >
 
     <uses-sdk
         android:minSdkVersion="14"
@@ -24,13 +24,11 @@
         </activity>
         <activity android:name=".DoaView" >
         </activity>
-        <activity
-            android:name=".DoaSearch"
-            android:label="@string/app_name" >
+        <activity android:name=".DoaSearch" >
         </activity>
-        <activity
-            android:name=".DoaBookmark"
-            android:label="@string/app_name" >
+        <activity android:name=".DoaBookmark" >
+        </activity>
+        <activity android:name=".DoaHelp" >
         </activity>
     </application>
 

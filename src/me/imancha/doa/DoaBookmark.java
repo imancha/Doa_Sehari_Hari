@@ -35,6 +35,7 @@ public class DoaBookmark extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		setTitle(R.string.action_bookmark);
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 
 		mydbb = new DoaDBB(this);
@@ -47,7 +48,7 @@ public class DoaBookmark extends Activity {
 			TV = (TextView) findViewById(R.id.textView5);
 			TV.setTypeface(type);
 			TV.setTextColor(Color.GRAY);
-			TV.setText("Bookmark Empty");
+			TV.setText(R.string.empty);
 		} else {
 			LV = (ListView) findViewById(R.id.listView1);
 			LV.setAdapter(new ArrayAdapter<String>(this,
@@ -71,12 +72,10 @@ public class DoaBookmark extends Activity {
 				@Override
 				public void onItemClick(AdapterView<?> arg0, View arg1,
 						int arg2, long arg3) {
-					intent = new Intent(getApplicationContext(), DoaView.class);
 					bundle = new Bundle();
-
 					bundle.putString("nama", arg0.getItemAtPosition(arg2)
 							.toString());
-
+					intent = new Intent(getApplicationContext(), DoaView.class);
 					intent.putExtras(bundle);
 					startActivity(intent);
 				}
@@ -105,8 +104,8 @@ public class DoaBookmark extends Activity {
 			ContextMenuInfo menuInfo) {
 		if (v.getId() == R.id.listView1) {
 			menu.setHeaderTitle(title);
-			menu.add(Menu.NONE, 0, 0, "View");
-			menu.add(Menu.NONE, 1, 1, "Remove from Bookmark");
+			menu.add(Menu.NONE, 0, 0, R.string.view);
+			menu.add(Menu.NONE, 1, 1, R.string.bookmark_on);
 		}
 	}
 
@@ -124,12 +123,10 @@ public class DoaBookmark extends Activity {
 		case 1:
 			mydbb = new DoaDBB(getApplicationContext());
 			mydbb.DeleteData(title);
-
-			Toast.makeText(getApplicationContext(),
-					title + " removed from Bookmark", Toast.LENGTH_SHORT)
-					.show();
-
 			mydbb.close();
+
+			Toast.makeText(getApplicationContext(), R.string.remove,
+					Toast.LENGTH_SHORT).show();
 
 			return true;
 		default:

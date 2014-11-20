@@ -91,23 +91,19 @@ public class DoaView extends Activity {
 		case R.id.bookmark_on:
 			mydbb = new DoaDBB(getApplicationContext());
 			mydbb.DeleteData(getTitle().toString());
-
-			Toast.makeText(getApplicationContext(),
-					getTitle().toString() + " removed from Bookmark",
-					Toast.LENGTH_SHORT).show();
-
 			mydbb.close();
+
+			Toast.makeText(getApplicationContext(), R.string.remove,
+					Toast.LENGTH_SHORT).show();
 
 			return true;
 		case R.id.bookmark_off:
 			mydbb = new DoaDBB(getApplicationContext());
 			mydbb.InsertData(getTitle().toString());
-
-			Toast.makeText(getApplicationContext(),
-					getTitle().toString() + " added to Bookmark",
-					Toast.LENGTH_SHORT).show();
-
 			mydbb.close();
+
+			Toast.makeText(getApplicationContext(), R.string.add,
+					Toast.LENGTH_SHORT).show();
 
 			return true;
 		default:

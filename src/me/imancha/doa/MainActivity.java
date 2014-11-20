@@ -2,6 +2,7 @@ package me.imancha.doa;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 
 import android.app.Activity;
@@ -18,6 +19,7 @@ import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.view.ContextMenu.ContextMenuInfo;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
@@ -33,6 +35,7 @@ public class MainActivity extends Activity {
 	private static ListView LV;
 	private static Intent intent;
 	private static Bundle bundle;
+	private static Typeface type;
 	private static DoaDB mydb;
 	private static DoaDBB mydbb;
 	private static String title;
@@ -65,14 +68,15 @@ public class MainActivity extends Activity {
 				final TextView text = (TextView) view
 						.findViewById(android.R.id.text1);
 
-				Typeface type = Typeface.createFromAsset(getAssets(),
-						"KacstBook.ttf");
+				type = Typeface.createFromAsset(getAssets(), "KacstBook.ttf");
 
 				text.setTypeface(type);
 
 				return view;
 			}
 		});
+
+		mydb.close();
 
 		LV.setOnItemClickListener(new OnItemClickListener() {
 
@@ -116,8 +120,6 @@ public class MainActivity extends Activity {
 		}
 
 		registerForContextMenu(LV);
-
-		mydb.close();
 	}
 
 	@Override
@@ -125,14 +127,14 @@ public class MainActivity extends Activity {
 			ContextMenuInfo menuInfo) {
 		if (v.getId() == R.id.listView1) {
 			menu.setHeaderTitle(title);
-			menu.add(Menu.NONE, 0, 0, "View");
+			menu.add(Menu.NONE, 0, 0, R.string.view);
 
 			mydbb = new DoaDBB(getApplicationContext());
 
 			if (mydbb.GetData(title).moveToFirst()) {
-				menu.add(Menu.NONE, 1, 1, "Remove from Bookmark");
+				menu.add(Menu.NONE, 1, 1, R.string.bookmark_on);
 			} else {
-				menu.add(Menu.NONE, 2, 1, "Add to Bookmark");
+				menu.add(Menu.NONE, 2, 1, R.string.bookmark_off);
 			}
 
 			mydbb.close();
@@ -153,27 +155,45 @@ public class MainActivity extends Activity {
 		case 1:
 			mydbb = new DoaDBB(getApplicationContext());
 			mydbb.DeleteData(title);
-
-			Toast.makeText(getApplicationContext(),
-					title + " removed from Bookmark", Toast.LENGTH_SHORT)
-					.show();
-
 			mydbb.close();
+
+			Toast.makeText(getApplicationContext(), R.string.remove,
+					Toast.LENGTH_SHORT).show();
 
 			return true;
 		case 2:
 			mydbb = new DoaDBB(getApplicationContext());
 			mydbb.InsertData(title);
-
-			Toast.makeText(getApplicationContext(),
-					title + " added to Bookmark", Toast.LENGTH_SHORT).show();
-
 			mydbb.close();
+
+			Toast.makeText(getApplicationContext(), R.string.add,
+					Toast.LENGTH_SHORT).show();
 
 			return true;
 		default:
 			return super.onContextItemSelected(item);
 		}
+	}
+
+	@Override
+	public boolean onMenuOpened(int featureId, Menu menu) {
+		//	Add icon in the overflow menu
+		if (featureId == Window.FEATURE_ACTION_BAR && menu != null) {
+			if (menu.getClass().getSimpleName().equals("MenuBuilder")) {
+				try {
+					Method m = menu.getClass().getDeclaredMethod(
+							"setOptionalIconsVisible", Boolean.TYPE);
+					m.setAccessible(true);
+					m.invoke(menu, true);
+				} catch (NoSuchMethodException e) {
+					Log.e("menu", "Show menu icon failed");
+				} catch (Exception e) {
+					throw new RuntimeException(e);
+				}
+			}
+		}
+
+		return super.onMenuOpened(featureId, menu);
 	}
 
 	@Override
@@ -193,11 +213,9 @@ public class MainActivity extends Activity {
 
 			@Override
 			public boolean onQueryTextSubmit(String arg0) {
-				intent = new Intent(getApplicationContext(), DoaSearch.class);
 				bundle = new Bundle();
-
 				bundle.putString("key", arg0.toString());
-
+				intent = new Intent(getApplicationContext(), DoaSearch.class);
 				intent.putExtras(bundle);
 				startActivity(intent);
 
@@ -226,12 +244,14 @@ public class MainActivity extends Activity {
 
 			return true;
 		case R.id.action_help:
-			Toast.makeText(getApplicationContext(), R.string.action_help,
-					Toast.LENGTH_SHORT).show();
+			intent = new Intent(getApplicationContext(), DoaHelp.class);
+			startActivity(intent);
+
 			return true;
 		case R.id.action_about:
 			Toast.makeText(getApplicationContext(), R.string.action_about,
 					Toast.LENGTH_SHORT).show();
+
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);

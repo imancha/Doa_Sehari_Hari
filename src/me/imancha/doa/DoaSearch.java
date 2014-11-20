@@ -40,6 +40,9 @@ public class DoaSearch extends Activity {
 
 		bundle = getIntent().getExtras();
 
+		setTitle(getString(R.string.action_search) + ": "
+				+ bundle.getString("key"));
+
 		mydb = new DoaDB(this);
 		mydb.OpenDatabase();
 
@@ -51,7 +54,7 @@ public class DoaSearch extends Activity {
 			TV = (TextView) findViewById(R.id.textView5);
 			TV.setTypeface(type);
 			TV.setTextColor(Color.GRAY);
-			TV.setText("No Match Found");
+			TV.setText(R.string.none);
 		} else {
 			LV = (ListView) findViewById(R.id.listView1);
 			LV.setAdapter(new ArrayAdapter<String>(this,
@@ -109,14 +112,14 @@ public class DoaSearch extends Activity {
 			ContextMenuInfo menuInfo) {
 		if (v.getId() == R.id.listView1) {
 			menu.setHeaderTitle(title);
-			menu.add(Menu.NONE, 0, 0, "View");
+			menu.add(Menu.NONE, 0, 0, R.string.view);
 
 			mydbb = new DoaDBB(getApplicationContext());
 
 			if (mydbb.GetData(title).moveToFirst()) {
-				menu.add(Menu.NONE, 1, 1, "Remove from Bookmark");
+				menu.add(Menu.NONE, 1, 1, R.string.bookmark_on);
 			} else {
-				menu.add(Menu.NONE, 2, 1, "Add to Bookmark");
+				menu.add(Menu.NONE, 2, 1, R.string.bookmark_off);
 			}
 
 			mydbb.close();
@@ -137,22 +140,19 @@ public class DoaSearch extends Activity {
 		case 1:
 			mydbb = new DoaDBB(getApplicationContext());
 			mydbb.DeleteData(title);
-
-			Toast.makeText(getApplicationContext(),
-					title + " removed from Bookmark", Toast.LENGTH_SHORT)
-					.show();
-
 			mydbb.close();
+
+			Toast.makeText(getApplicationContext(), R.string.remove,
+					Toast.LENGTH_SHORT).show();
 
 			return true;
 		case 2:
 			mydbb = new DoaDBB(getApplicationContext());
 			mydbb.InsertData(title);
-
-			Toast.makeText(getApplicationContext(),
-					title + " added to Bookmark", Toast.LENGTH_SHORT).show();
-
 			mydbb.close();
+
+			Toast.makeText(getApplicationContext(), R.string.add,
+					Toast.LENGTH_SHORT).show();
 
 			return true;
 		default:
