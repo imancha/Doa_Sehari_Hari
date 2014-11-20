@@ -177,7 +177,7 @@ public class MainActivity extends Activity {
 
 	@Override
 	public boolean onMenuOpened(int featureId, Menu menu) {
-		//	Add icon in the overflow menu
+		// Add icon in the overflow menu
 		if (featureId == Window.FEATURE_ACTION_BAR && menu != null) {
 			if (menu.getClass().getSimpleName().equals("MenuBuilder")) {
 				try {
@@ -249,8 +249,8 @@ public class MainActivity extends Activity {
 
 			return true;
 		case R.id.action_about:
-			Toast.makeText(getApplicationContext(), R.string.action_about,
-					Toast.LENGTH_SHORT).show();
+			intent = new Intent(getApplicationContext(), DoaAbout.class);
+			startActivity(intent);
 
 			return true;
 		default:

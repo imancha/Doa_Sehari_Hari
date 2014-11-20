@@ -16,5 +16,9 @@
     <string name="remove">Removed from Bookmark</string>
     <string name="empty">Bookmark Empty</string>
     <string name="none">No Match Found</string>
+    <string name="about">Copyright \u00A9 2014 - imancha</string>
+    <string name="facebook">facebook</string>
+    <string name="twitter">twitter</string>
+    <string name="email">email</string>
 
 </resources>
