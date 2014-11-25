@@ -46,9 +46,7 @@ public class DoaDBB extends SQLiteOpenHelper {
 
 		if (!GetData(nama).moveToFirst()) {
 			ContentValues insertValue = new ContentValues();
-
 			insertValue.put(COLUMN_NAMA, nama);
-
 			db.insert(TABLE_NAME, null, insertValue);
 		}
 
@@ -63,11 +61,10 @@ public class DoaDBB extends SQLiteOpenHelper {
 	}
 
 	public ArrayList<String> GetAllData() {
+		ArrayList<String> list = new ArrayList<String>();
 		SQLiteDatabase db = this.getReadableDatabase();
 		Cursor res = db.rawQuery("SELECT " + COLUMN_NAMA + " FROM "
 				+ TABLE_NAME + " ORDER BY " + COLUMN_ID + " DESC", null);
-		ArrayList<String> list = new ArrayList<String>();
-
 		res.moveToFirst();
 		while (res.isAfterLast() == false) {
 			list.add(res.getString(res.getColumnIndex(COLUMN_NAMA)));

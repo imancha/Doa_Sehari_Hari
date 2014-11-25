@@ -11,10 +11,10 @@ import android.widget.Toast;
 
 public class DoaView extends Activity {
 
-	private static TextView TV1, TV2, TV3, TV4;
-	private static Typeface type1, type2;
-	private static DoaDB mydb;
-	private static DoaDBB mydbb;
+	private TextView TV1, TV2, TV3, TV4;
+	private Typeface type1, type2;
+	private DoaDB mydb;
+	private DoaDBB mydbb;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

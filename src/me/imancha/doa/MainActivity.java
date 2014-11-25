@@ -32,13 +32,13 @@ import android.widget.Toast;
 
 public class MainActivity extends Activity {
 
-	private static ListView LV;
-	private static Intent intent;
-	private static Bundle bundle;
-	private static Typeface type;
-	private static DoaDB mydb;
-	private static DoaDBB mydbb;
-	private static String title;
+	private ListView LV;
+	private Intent intent;
+	private Bundle bundle;
+	private Typeface type;
+	private DoaDB mydb;
+	private DoaDBB mydbb;
+	private String title;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

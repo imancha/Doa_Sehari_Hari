@@ -8,8 +8,8 @@ import android.widget.TextView;
 
 public class DoaHelp extends Activity {
 
-	private static ImageView IV1, IV2;
-	private static TextView TV1, TV2, TV3, TV4;
+	private ImageView IV1, IV2;
+	private TextView TV1, TV2, TV3, TV4;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

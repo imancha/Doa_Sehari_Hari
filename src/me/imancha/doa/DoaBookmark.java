@@ -23,13 +23,13 @@ import android.widget.AdapterView.OnItemLongClickListener;
 
 public class DoaBookmark extends Activity {
 
-	private static ListView LV;
-	private static TextView TV;
-	private static Typeface type;
-	private static Intent intent;
-	private static Bundle bundle;
-	private static DoaDBB mydbb;
-	private static String title;
+	private ListView LV;
+	private TextView TV;
+	private Typeface type;
+	private Intent intent;
+	private Bundle bundle;
+	private DoaDBB mydbb;
+	private String title;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

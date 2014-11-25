@@ -1,8 +1,11 @@
 package me.imancha.doa;
 
+import java.io.IOException;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -15,8 +18,8 @@ import android.widget.TextView;
 
 public class DoaAbout extends Activity {
 
-	private static ImageView IV1, IV2, IV3, IV4;
-	private static TextView TV1, TV2, TV3;
+	private ImageView IV1, IV2, IV3, IV4;
+	private TextView TV1, TV2, TV3;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -58,10 +61,18 @@ public class DoaAbout extends Activity {
 		TV2.setTextColor(Color.GRAY);
 		TV2.setTranslationY(246);
 
-		IV2.setImageResource(R.drawable.ic_facebook);
-		IV2.setScaleX(2);
-		IV2.setScaleY(2);
-		IV2.setTranslationY(-100);
+		try {			
+			IV2.setImageBitmap(BitmapFactory.decodeStream(getAssets().open(
+					"Metroid_96_0025_Facebook.png")));
+			IV3.setImageBitmap(BitmapFactory.decodeStream(getAssets().open(
+					"Metroid_96_0024_Twitter.png")));
+			IV4.setImageBitmap(BitmapFactory.decodeStream(getAssets().open(
+					"Metroid_96_0043_Mail.png")));
+		} catch (IOException e) {
+			Log.e("load", "Load Image from Assets Failed");
+		}
+
+		IV2.setTranslationY(-50);
 		IV2.setTranslationX(-120);
 		IV2.setOnClickListener(new OnClickListener() {
 
@@ -72,10 +83,7 @@ public class DoaAbout extends Activity {
 			}
 		});
 
-		IV3.setImageResource(R.drawable.ic_twitter);
-		IV3.setScaleX(2);
-		IV3.setScaleY(2);
-		IV3.setTranslationY(-100);
+		IV3.setTranslationY(-50);
 		IV3.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -86,10 +94,7 @@ public class DoaAbout extends Activity {
 			}
 		});
 
-		IV4.setImageResource(R.drawable.ic_email);
-		IV4.setScaleX(2);
-		IV4.setScaleY(2);
-		IV4.setTranslationY(-100);
+		IV4.setTranslationY(-50);
 		IV4.setTranslationX(120);
 		IV4.setOnClickListener(new OnClickListener() {
 

@@ -7,8 +7,8 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:paddingBottom="5dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
         android:paddingTop="10dp" >
 
         <TextView
@@ -18,7 +18,7 @@
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="25dp"
-            android:textAppearance="?android:attr/textAppearance"
+            android:lineSpacingExtra="5dp"
             android:textSize="23sp" />
 
         <TextView
@@ -30,7 +30,6 @@
             android:layout_marginBottom="20dp"
             android:gravity="center"
             android:lineSpacingExtra="25dp"
-            android:textAppearance="?android:attr/textAppearance"
             android:textSize="33sp" />
 
         <TextView
@@ -42,7 +41,6 @@
             android:layout_marginBottom="20dp"
             android:gravity="center"
             android:lineSpacingExtra="5dp"
-            android:textAppearance="?android:attr/textAppearance"
             android:textSize="20sp" />
 
         <TextView
@@ -53,9 +51,7 @@
             android:layout_centerHorizontal="true"
             android:gravity="center"
             android:lineSpacingExtra="3dp"
-            android:textAppearance="?android:attr/textAppearance"
             android:textSize="20sp" />
-
     </RelativeLayout>
 
 </ScrollView>

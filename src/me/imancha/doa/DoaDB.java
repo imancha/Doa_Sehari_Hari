@@ -17,7 +17,7 @@ import android.util.Log;
 
 public class DoaDB extends SQLiteOpenHelper {
 
-	public static final int DATABASE_VERSION = 1;
+	public static final int DATABASE_VERSION = 2;
 	public static final String DATABASE_PATH = Environment.getDataDirectory()
 			+ "/data/me.imancha.doa/databases/";
 	public static final String DATABASE_NAME = "doa.db";
@@ -29,6 +29,9 @@ public class DoaDB extends SQLiteOpenHelper {
 	public static final String COLUMN_ARTI = "arti";
 
 	private Context context;
+	private SQLiteDatabase db;
+	private Cursor res;
+	private ArrayList<String> list;
 
 	public DoaDB(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -78,20 +81,19 @@ public class DoaDB extends SQLiteOpenHelper {
 	}
 
 	public Cursor GetData(String nama) {
-		SQLiteDatabase db = this.getReadableDatabase();
-		Cursor res = db.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE "
+		db = this.getReadableDatabase();
+		res = db.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE "
 				+ COLUMN_NAMA + " = '" + nama + "' LIMIT 1", null);
 
 		return res;
 	}
 
 	public ArrayList<String> GetMatchData(String nama) {
-		SQLiteDatabase db = this.getReadableDatabase();
-		Cursor res = db.rawQuery("SELECT " + COLUMN_NAMA + " FROM " + TABLE_NAME
+		list = new ArrayList<String>();
+		db = this.getReadableDatabase();
+		res = db.rawQuery("SELECT " + COLUMN_NAMA + " FROM " + TABLE_NAME
 				+ " WHERE " + COLUMN_NAMA + " LIKE '%" + nama + "%' ORDER BY "
 				+ COLUMN_NAMA + " ASC", null);
-		ArrayList<String> list = new ArrayList<String>();
-
 		res.moveToFirst();
 		while (res.isAfterLast() == false) {
 			list.add(res.getString(res.getColumnIndex(COLUMN_NAMA)));
@@ -102,11 +104,10 @@ public class DoaDB extends SQLiteOpenHelper {
 	}
 
 	public ArrayList<String> GetAllData() {
-		SQLiteDatabase db = this.getReadableDatabase();
-		Cursor res = db.rawQuery("SELECT " + COLUMN_NAMA + " FROM " + TABLE_NAME
+		list = new ArrayList<String>();
+		db = this.getReadableDatabase();
+		res = db.rawQuery("SELECT " + COLUMN_NAMA + " FROM " + TABLE_NAME
 				+ " ORDER BY " + COLUMN_NAMA + " ASC", null);
-		ArrayList<String> list = new ArrayList<String>();
-
 		res.moveToFirst();
 		while (res.isAfterLast() == false) {
 			list.add(res.getString(res.getColumnIndex(COLUMN_NAMA)));
